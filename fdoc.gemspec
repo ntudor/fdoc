@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
 
   s.version = File.read("#{File.dirname(__FILE__)}/VERSION")
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.rubygems_version = "1.3.7"
+  s.rubygems_version = "1.3.8"
 
   s.authors = ["Matt Wilson", "Zach Margolis", "Sean Sorrell"]
   s.email = "support@squareup.com"
