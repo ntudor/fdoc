@@ -19,7 +19,8 @@ class Fdoc::Endpoint
       if schema && schema["properties"]
         schema["properties"].tap{|x| x.delete("format")}
       end
-      JSON::Validator.validate!(schema, stringify_keys(params).tap{|x| x.delete("format")})
+      params.delete 'format'
+      JSON::Validator.validate!(schema || [], stringify_keys(params).tap{|x| x.delete("format")})
     end
   end
 
