@@ -21,7 +21,7 @@ class Fdoc::Service
         'description' => '???'
       }
 
-      Dir.mkdir(service_dir) unless Dir.exist?(service_dir)
+      FileUtils.mkdir_p(service_dir) unless Dir.exist?(service_dir)
       service_path = "#{service_dir}/???.fdoc.service"
       File.open(service_path, "w") { |file| YAML.dump(schema, file) }
 
