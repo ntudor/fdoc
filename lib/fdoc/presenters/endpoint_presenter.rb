@@ -45,6 +45,10 @@ class Fdoc::EndpointPresenter < Fdoc::BasePresenter
     !endpoint.response_parameters.empty?
   end
 
+  def request_headers
+    Fdoc::SchemaPresenter.new(endpoint.request_headers, options)
+  end
+
   def request_parameters
     Fdoc::SchemaPresenter.new(endpoint.request_parameters,
       options.merge(:request => true)

@@ -33,6 +33,11 @@
           <%= tag_with_anchor('h3', 'Example Request') %>
           <%= example_request.to_html %>
 
+          <% unless request_headers.empty? %>
+          <%= tag_with_anchor('h3', 'Request Headers') %>
+          <%= request_headers.to_html %>
+          <% end %> 
+
           <%= tag_with_anchor('h3', 'Request Parameters') %>
           <%= request_parameters.to_html %>
         <% end %>

@@ -65,6 +65,10 @@ class Fdoc::Endpoint
     @schema["description"]
   end
 
+  def request_headers
+    @schema["requestHeaders"] ||= {}
+  end
+
   def request_parameters
     @schema["requestParameters"] ||= {}
   end

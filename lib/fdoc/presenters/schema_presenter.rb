@@ -27,6 +27,10 @@ class Fdoc::SchemaPresenter < Fdoc::BasePresenter
     options[:nested]
   end
 
+  def empty?
+    @schema.empty?
+  end
+
   def to_html
     html = StringIO.new
 
