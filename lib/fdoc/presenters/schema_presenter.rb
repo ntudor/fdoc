@@ -122,7 +122,7 @@ class Fdoc::SchemaPresenter < Fdoc::BasePresenter
   end
 
   def required?
-    return nil unless @schema["required"]
+    return nil unless @schema.has_key?("required")
     @schema["required"] ? "yes" : "no"
   end
 
