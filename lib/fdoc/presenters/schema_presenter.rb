@@ -37,7 +37,7 @@ class Fdoc::SchemaPresenter < Fdoc::BasePresenter
 
     html << '<ul>'
     begin
-      html << '<li>Required: %s</li>' % required? if nested?
+      html << '<li>Required: %s</li>' % required? if required? && nested?
       html << '<li>Type: %s</li>' % type if type
       html << '<li>Format: %s</li>' % format if format
       html << '<li>Example: %s</li>' % example.to_html if example
@@ -62,7 +62,7 @@ class Fdoc::SchemaPresenter < Fdoc::BasePresenter
     md = StringIO.new
     md << 'Deprecated' if deprecated?
     md << "\n#{@schema["description"]}"
-    md << "\n#{prefix}* __Required__: #{required?}" if nested?
+    md << "\n#{prefix}* __Required__: #{required?}" if required? && nested?
     md << "\n#{prefix}* __Type__: #{type}" if type
     md << "\n#{prefix}* __Format__: #{format}" if format
     md << "\n#{prefix}* __Example__: <tt>#{example.to_markdown}</tt>" if example
@@ -122,6 +122,7 @@ class Fdoc::SchemaPresenter < Fdoc::BasePresenter
   end
 
   def required?
+    return nil unless @schema["required"]
     @schema["required"] ? "yes" : "no"
   end
 
