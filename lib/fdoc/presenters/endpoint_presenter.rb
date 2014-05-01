@@ -73,6 +73,10 @@ class Fdoc::EndpointPresenter < Fdoc::BasePresenter
     response_codes.select { |response_code| !response_code.successful? }
   end
 
+  def example_curl_request
+    Fdoc::JsonPresenter.new(example_curl_from_schema(endpoint.verb, endpoint.path, endpoint.request_headers, endpoint.request_parameters))
+  end
+
   def example_request
     Fdoc::JsonPresenter.new(example_from_schema(endpoint.request_parameters))
   end
@@ -113,6 +117,28 @@ class Fdoc::EndpointPresenter < Fdoc::BasePresenter
     end
   end
 
+  def example_curl_from_schema(verb, path, headers_schema, schema)
+    if schema.nil?
+      return nil
+    end
+
+    type = Array(schema["type"])
+
+    if type.any? { |t| ATOMIC_TYPES.include?(t) }
+      schema["example"] || schema["default"] || example_from_atom(schema)
+    elsif type.include?("object") || schema["properties"]
+      #curl --header "X-Rosi-Platform: keep" -X POST -d  "dsr_login=201234567&password=111111" http://localhost:8181/authentication_service/login
+      "curl "+curl_headers_example_from_object(headers_schema) + "-X "+ verb + 
+        " -d '" + curl_params_example_from_object(schema) + "' " +
+        "http://localhost:8181/"+path
+    elsif type.include?("array") || schema["items"]
+      example_from_array(schema)
+    else
+      {}
+    end
+  end
+
+
   def example_from_atom(schema)
     type = Array(schema["type"])
     hash = schema.hash
@@ -138,6 +164,26 @@ class Fdoc::EndpointPresenter < Fdoc::BasePresenter
       end
     end
     example
+  end
+
+  def curl_headers_example_from_object(object)
+    example = ''
+    if object["properties"]
+      object["properties"].each do |key, value|
+        example += "--header '" + key + ":" +value['example'].to_s + "' "
+      end
+    end
+    example
+  end
+
+  def curl_params_example_from_object(object)
+    example = ''
+    if object["properties"]
+      object["properties"].each do |key, value|
+        example += key+"="+example_from_schema(value) + "&"
+      end
+    end
+    example.sub(/\&$/,'')
   end
 
   def example_from_array(array)
