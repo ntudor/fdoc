@@ -38,7 +38,7 @@ class Fdoc::EndpointPresenter < Fdoc::BasePresenter
   end
 
   def show_request?
-    !endpoint.request_parameters.empty?
+    !(endpoint.request_parameters.empty? && endpoint.request_headers.empty?)
   end
 
   def show_response?
