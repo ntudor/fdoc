@@ -180,7 +180,7 @@ class Fdoc::EndpointPresenter < Fdoc::BasePresenter
     example = ''
     if object["properties"]
       object["properties"].each do |key, value|
-        example += key+"="+example_from_schema(value) + "&"
+        example += "#{key}=#{example_from_schema(value)}&"
       end
     end
     example.sub(/\&$/,'')
