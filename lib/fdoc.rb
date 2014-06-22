@@ -1,5 +1,16 @@
 $:.unshift(File.dirname(__FILE__))
 
+module YAML
+  def YAML.include file_name
+    require 'erb'
+    ERB.new(IO.read(file_name)).result
+  end
+
+  def YAML.load_erb file_name
+    YAML::load(YAML::include(file_name))
+  end  
+end
+
 module Fdoc
   DEFAULT_SERVICE_PATH = "docs/fdoc"
 

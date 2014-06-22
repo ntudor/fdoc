@@ -2,6 +2,17 @@ require 'thor'
 require 'fdoc/service'
 require 'fdoc/meta_service'
 
+module YAML
+  def YAML.include file_name
+    require 'erb'
+    ERB.new(IO.read(file_name)).result
+  end
+
+  def YAML.load_erb file_name
+    YAML::load(YAML::include(file_name))
+  end  
+end
+
 module Fdoc
   # A Thor::Error to be thrown when an fdoc directory is not found
   class NotFound < Thor::Error; end
