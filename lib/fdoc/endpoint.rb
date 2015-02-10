@@ -15,11 +15,11 @@ class Fdoc::Endpoint
 
   def consume_request(params, successful=true)
     if successful
-      schema = set_additional_properties_false_on(request_parameters.dup) 
+      schema = set_additional_properties_false_on(request_parameters.dup)
       if schema && schema["properties"]
         schema["properties"].tap{|x| x.delete("format")}
       end
-      JSON::Validator.validate!(schema, stringify_keys(params).tap{|x| x.delete("format")})
+      JSON::Validator.validate!(schema, stringify_keys(params).tap{|x| x.delete("format")}, :version => :draft3)
     end
   end
 
@@ -39,7 +39,7 @@ class Fdoc::Endpoint
         ]
     elsif successful
       schema = set_additional_properties_false_on(response_parameters.dup)
-      JSON::Validator.validate!(schema, stringify_keys(params))
+      JSON::Validator.validate!(schema, stringify_keys(params), :version => :draft3)
     else
       true
     end
