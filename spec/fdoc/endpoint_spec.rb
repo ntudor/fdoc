@@ -69,7 +69,7 @@ describe Fdoc::Endpoint do
       before { params.merge!("offset" => "woot") }
 
       it "should have the Ruby type in the error message" do
-        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /String/)
+        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /string/)
       end
     end
 
